@@ -1,5 +1,5 @@
 /*
-	
+
 	Author: Christopher Straight
 
 	Version: 0.0.1
@@ -8,9 +8,9 @@
 
 	Name: Analemma
 
-	Description: Persistent Threat Detection System HTTP log parser for IIS. 
-	This system ingests the latest log file in a given directory and passes 
-	it on to a Work Queue in RabbitMQ for further processing by service 
+	Description: Persistent Threat Detection System HTTP log parser for IIS.
+	This system ingests the latest log file in a given directory and passes
+	it on to a work queue in RabbitMQ for further processing by service
 	workers.
 
 	This file is part of the Persistant Threat Detection System software (PTDS).
@@ -33,8 +33,8 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"io/ioutil"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -43,49 +43,70 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
-	}
+func main() {
+
+	// Start tailing the IIS log file.
+	TailHTTPLog()
+
 }
 
-// GetLatestFile(dir string) Ensure that the file that we are reading is the latest */
-func GetLatestFile(dir string) string {
-	files, err := ioutil.ReadDir(dir)
+// GetLatestFile(dir string) Ensure that the file that we are reading is
+// the latest log file in the given directory.
+func GetLatestFile(directory string) string {
+
+	files, err := ioutil.ReadDir(directory)
+
 	if err != nil {
+
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+
 	}
+
 	var modTime time.Time
 	var names []string
+
 	for _, fi := range files {
+
 		if fi.Mode().IsRegular() {
+
 			if !fi.ModTime().Before(modTime) {
+
 				if fi.ModTime().After(modTime) {
+
 					modTime = fi.ModTime()
 					names = names[:0]
+
 				}
+
 				names = append(names, fi.Name())
 			}
 		}
 	}
+
 	if len(names) > 0 {
+
 		return names[0]
+
 	}
+
 	return ""
 }
 
-func tailHTTPLog() {
-	
+// TailHTTPLog() tails the latest http log file in a given directory and
+// sends individual request values to the work queue.
+func TailHTTPLog() {
+
 	conn, err := amqp.Dial("amqp://user:password@192.168.1.1:5672/")
-	
-	failOnError(err, "Failed to connect to RabbitMQ")
+
+	FailOnError(err, "Failed to connect to RabbitMQ")
 
 	defer conn.Close()
 
 	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel.")
+
+	FailOnError(err, "Failed to open a channel.")
+
 	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
@@ -97,18 +118,25 @@ func tailHTTPLog() {
 		nil,          // arguments
 	)
 
-	failOnError(err, "Failed to declare a queue.")
+	FailOnError(err, "Failed to declare a queue.")
 
-	// C:\\inetpub\\logs\\AdvancedLogs\\
 	t, err := tail.TailFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"+GetLatestFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"), tail.Config{ReOpen: true, MustExist: false, Follow: true, Poll: true})
+
 	for line := range t.Lines {
+		
 		tokens := strings.Split(line.Text, " ")
+
+		// Ignore all lines in the log file that begin with #
+		// These are comments and not requests so no need to
+		// pass them to the work queue.
 		if strings.HasPrefix(tokens[0], "#") == true {
 
 		} else {
-			// fmt.Println(tokens[0], tokens[1])
+
 			msgBody := tokens[8]
+
 			body := msgBody
+
 			err = ch.Publish(
 				"",     // exchange
 				q.Name, // routing key
@@ -119,21 +147,24 @@ func tailHTTPLog() {
 					ContentType:  "text/plain",
 					Body:         []byte(body),
 				})
-			failOnError(err, "Failed to publish a message")
-			// log.Printf("[x] Sent %s", body)
+
+			FailOnError(err, "Failed to publish a message")
+
 			fmt.Printf(tokens[8] + "\n\n")
 		}
 
 	}
+
 	if err != nil {
 		return
 	}
 
 }
 
-func main() {
-
-	// Tails the IIS realtime access log
-	tailHTTPLog()
-
+// FailOnError(err error, msg string) is a simple error wrapper.
+func FailOnError(err error, msg string) {
+	if err != nil {
+		log.Fatalf("%s: %s", msg, err)
+		panic(fmt.Sprintf("%s: %s", msg, err))
+	}
 }
