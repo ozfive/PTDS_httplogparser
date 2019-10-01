@@ -1,4 +1,5 @@
 /*
+	Copyright: Christopher Straight 2018 All rights reserved.
 
 	Author: Christopher Straight
 
@@ -6,7 +7,7 @@
 
 	License: GPL v2.0
 
-	Name: Analemma
+	Name: PTDS (Persistent Threat Detection System) HTTP log parser.
 
 	Description: Persistent Threat Detection System HTTP log parser for IIS.
 	This system ingests the latest log file in a given directory and passes
