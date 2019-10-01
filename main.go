@@ -1,32 +1,32 @@
 /*
 	
 	Author: Christopher Straight
-	
+
 	Version: 0.0.1
-	
+
 	License: GPL v2.0
-	
+
 	Name: Analemma
-	
+
 	Description: Persistent Threat Detection System HTTP log parser for IIS. 
 	This system ingests the latest log file in a given directory and passes 
 	it on to a Work Queue in RabbitMQ for further processing by service 
 	workers.
-	
+
 	This file is part of the Persistant Threat Detection System software (PTDS).
 
-    PTDS is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
-    (at your option) any later version.
+	PTDS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 2 of the License, or
+	(at your option) any later version.
 
-    PTDS is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	PTDS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 package main
