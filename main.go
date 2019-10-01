@@ -57,18 +57,19 @@ func GetLatestFile(directory string) string {
 	files, err := ioutil.ReadDir(directory)
 
 	if err != nil {
-
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
-
 	}
 
 	var modTime time.Time
 	var names []string
 
 	for _, fi := range files {
+		
 		if fi.Mode().IsRegular() {
+			
 			if !fi.ModTime().Before(modTime) {
+				
 				if fi.ModTime().After(modTime) {
 					modTime = fi.ModTime()
 					names = names[:0]
