@@ -67,16 +67,11 @@ func GetLatestFile(directory string) string {
 	var names []string
 
 	for _, fi := range files {
-
 		if fi.Mode().IsRegular() {
-
 			if !fi.ModTime().Before(modTime) {
-
 				if fi.ModTime().After(modTime) {
-
 					modTime = fi.ModTime()
 					names = names[:0]
-
 				}
 
 				names = append(names, fi.Name())
@@ -85,9 +80,7 @@ func GetLatestFile(directory string) string {
 	}
 
 	if len(names) > 0 {
-
 		return names[0]
-
 	}
 
 	return ""
@@ -120,21 +113,21 @@ func TailHTTPLog() {
 
 	FailOnError(err, "Failed to declare a queue.")
 
-	t, err := tail.TailFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"+GetLatestFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"), tail.Config{ReOpen: true, MustExist: false, Follow: true, Poll: true})
+	t, err := tail.TailFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"+GetLatestFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"), 
+	tail.Config{ReOpen: true, MustExist: false, Follow: true, Poll: true})
 
 	for line := range t.Lines {
 		
 		tokens := strings.Split(line.Text, " ")
 
-		// Ignore all lines in the log file that begin with #
-		// These are comments and not requests so no need to
-		// pass them to the work queue.
+		// Ignore all lines in the log file that begin with #.
+		// These lines are comments and not requests so no 
+		// need to pass them to the work queue.
 		if strings.HasPrefix(tokens[0], "#") == true {
 
 		} else {
 
 			msgBody := tokens[8]
-
 			body := msgBody
 
 			err = ch.Publish(
@@ -158,13 +151,15 @@ func TailHTTPLog() {
 	if err != nil {
 		return
 	}
-
 }
 
 // FailOnError(err error, msg string) is a simple error wrapper.
 func FailOnError(err error, msg string) {
+	
 	if err != nil {
+
 		log.Fatalf("%s: %s", msg, err)
 		panic(fmt.Sprintf("%s: %s", msg, err))
+
 	}
 }
