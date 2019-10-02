@@ -126,7 +126,7 @@ func TailHTTPLog() {
 		// Ignore all lines in the log file that begin with #.
 		// These lines are comments and not requests so no
 		// need to pass them to the work queue.
-		if strings.HasPrefix(tokens[0], "#") == true {
+		if strings.HasPrefix(tokens[0], "#") {
 
 		} else {
 
