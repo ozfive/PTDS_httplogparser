@@ -127,7 +127,7 @@ func TailHTTPLog() {
 		// These lines are comments and not requests so no
 		// need to pass them to the work queue.
 		if strings.HasPrefix(tokens[0], "#") {
-
+ 
 		} else {
 
 			msgBody := tokens[8]
