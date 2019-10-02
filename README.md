@@ -1,6 +1,6 @@
 # PTDS_httplogparser
 
-[![Build Status](https://travis-ci.org/ozfive/PTDS_httplogparser.svg?branch=master)](https://ttravis-ci.org/ozfive/PTDS_httplogparser)
+[![Build Status](https://travis-ci.org/ozfive/PTDS_httplogparser.svg?branch=master)](https://travis-ci.org/ozfive/PTDS_httplogparser)
 [![GolangCI](https://golangci.com/badges/github.com/ozfive/PTDS_httplogparser.svg)](https://golangci.com)
 [![Go Report](https://goreportcard.com/badge/github.com/ozfive/PTDS_httplogparser)](https://goreportcard.com/badge/github.com/ozfive/PTDS_httplogparser)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ozfive_PTDS_httplogparser&metric=alert_status)](https://sonarcloud.io/dashboard?id=ozfive_PTDS_httplogparser)
