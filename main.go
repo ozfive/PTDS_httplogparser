@@ -1,3 +1,5 @@
+package main
+
 /*
 	Copyright: Christopher Straight 2018 All rights reserved.
 
@@ -14,7 +16,7 @@
 	it on to a work queue in RabbitMQ for further processing by service
 	workers.
 
-	This file is part of the Persistant Threat Detection System software (PTDS).
+	This file is part of the Persistent Threat Detection System software (PTDS).
 
 	PTDS is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -30,7 +32,6 @@
 	along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
 
 */
-package main
 
 import (
 	"fmt"
@@ -51,7 +52,7 @@ func main() {
 
 }
 
-// GetLatestFile(dir string) Ensure that the file that we are reading is
+// GetLatestFile (dir string) Ensure that the file that we are reading is
 // the latest log file in the given directory.
 func GetLatestFile(directory string) string {
 
@@ -66,11 +67,11 @@ func GetLatestFile(directory string) string {
 	var names []string
 
 	for _, fi := range files {
-		
+
 		if fi.Mode().IsRegular() {
-			
+
 			if !fi.ModTime().Before(modTime) {
-				
+
 				if fi.ModTime().After(modTime) {
 					modTime = fi.ModTime()
 					names = names[:0]
@@ -88,7 +89,7 @@ func GetLatestFile(directory string) string {
 	return ""
 }
 
-// TailHTTPLog() tails the latest http log file in a given directory and
+// TailHTTPLog () tails the latest http log file in a given directory and
 // sends individual request values to the work queue.
 func TailHTTPLog() {
 
@@ -115,15 +116,15 @@ func TailHTTPLog() {
 
 	FailOnError(err, "Failed to declare a queue.")
 
-	t, err := tail.TailFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"+GetLatestFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"), 
-	tail.Config{ReOpen: true, MustExist: false, Follow: true, Poll: true})
+	t, err := tail.TailFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"+GetLatestFile("C:\\inetpub\\logs\\LogFiles\\W3SVC3\\"),
+		tail.Config{ReOpen: true, MustExist: false, Follow: true, Poll: true})
 
 	for line := range t.Lines {
-		
+
 		tokens := strings.Split(line.Text, " ")
 
 		// Ignore all lines in the log file that begin with #.
-		// These lines are comments and not requests so no 
+		// These lines are comments and not requests so no
 		// need to pass them to the work queue.
 		if strings.HasPrefix(tokens[0], "#") == true {
 
@@ -155,9 +156,9 @@ func TailHTTPLog() {
 	}
 }
 
-// FailOnError(err error, msg string) is a simple error wrapper.
+// FailOnError (err error, msg string) is a simple error wrapper.
 func FailOnError(err error, msg string) {
-	
+
 	if err != nil {
 
 		log.Fatalf("%s: %s", msg, err)
