@@ -8,4 +8,4 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ozfive_PTDS_httplogparser&metric=bugs)](https://sonarcloud.io/dashboard?id=ozfive_PTDS_httplogparser)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ozfive_PTDS_httplogparser&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=ozfive_PTDS_httplogparser)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ozfive_PTDS_httplogparser&metric=security_rating)](https://sonarcloud.io/dashboard?id=ozfive_PTDS_httplogparser)
-Persistent Threat Detection System HTTP log parser for IIS. This system ingests the latest log file in a given directory and passes it on to a work queue in RabbitMQ for further processing by service workers.
+Persistent Threat Detection System HTTP log parser for IIS. This system ingests the latest log file in a given directory and passes each record on to a work queue in RabbitMQ for further processing by service workers.
