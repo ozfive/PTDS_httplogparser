@@ -93,7 +93,7 @@ func GetLatestFile(directory string) string {
 // sends individual request values to the work queue.
 func TailHTTPLog() {
 
-	conn, err := amqp.Dial("amqp://user:password@192.168.1.1:5672/")
+	conn, err := amqp.Dial("amqp://[USERNAME]:[PASSWORD][RABBITMQ SERVER IP]:[PORT]/")
 
 	FailOnError(err, "Failed to connect to RabbitMQ")
 
@@ -127,7 +127,7 @@ func TailHTTPLog() {
 		// These lines are comments and not requests so no
 		// need to pass them to the work queue.
 		if strings.HasPrefix(tokens[0], "#") {
- 			// Do nothing with this line since it is a comment.
+			// Do nothing with this line since it is a comment.
 		} else {
 
 			msgBody := tokens[8]
